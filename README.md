@@ -1,2 +1,3 @@
 # carpetStoreApp
 This applaction is a part from my education -carpetStoreApp
+Inventory store, buying and selling products. Building a website for carpet store contains interfaces for the store manager and for the customers. A site that allows the store manager to add new products and download products from the site and update the quantity of products on the site. Add or download a quantity of each product and also allows customers to enter the category they choose and browse and add products to their shopping cart in the quantity they choose. Website for the store manager and the customer to make a purchase and it depends on what he puts in that he is a manager or a customer.
