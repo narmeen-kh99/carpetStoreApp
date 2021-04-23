@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name ="viewport"  content="width=device-width, initial-scale=1"/>
+    <style>
+           .container {
+            width: 600px;
+            height: 400px;
+            position: relative;
+        }
+        label{
+            display:inline-block;
+            width:10%;
+        }
+        input {
+            width: 10%;
+            display: inline-block;
+        }
+    </style>
+        <title></title>
+        <script src="CarpetProducts.js"></script>
+        <script>
+            //פונקציה שטוענת את המוצרים לתוך מערך המוצרים
+            function loadCarpets() {
+               //localStorage["Carpets"] = JSON.stringify(CarpetProducts);
+
+                /*
+                 this if statement occur only once when there's no copy in local storage
+                 */
+                //אם אני נכנסת פעם הראשונה כוונה ש לוקל סתוריג רייק  עדיין אין תא של מוצרים
+                if (localStorage["Carpets"] == undefined) {
+                    update();
+                }
+
+                // this will create a copy from local storage
+                CarpetProducts = JSON.parse(localStorage["Carpets"]);//לוקח מה שיש לי בלוקל סתוריג משנה לסטריג ומכניס למערך דורס מה שהיה קודם במערך ושם החדש
+                //console.log(CarpetProducts));
+            }
+
+            /*
+             * update current carpets status into localstorage
+             */
+            //פונקציה שמעדכנת לוקל סתוריג לוקחת  מערך אופיקטים של המוצרים משנה לסטרינג משרשר אותו ומכניסה ללוקל סתוריג
+            function update() {
+                localStorage["Carpets"] = JSON.stringify(CarpetProducts);
+            }
+
+            function startToChoose() {
+                console.log(CarpetProducts);
+                loadCarpets();
+                Design();
+                Carpetdisplay("CarpetInformation", CarpetProducts);
+            }
+            //פונקציה לעיצוב
+            function Design() {
+                document.getElementById("ShopeName").style.color = "brown";//מקבלים אלימנט שיש לו שדה שמשנה את הצבע
+                document.getElementById("ShopeName").style.textAlign = "center";//מקבלים אלימנט שיש לו שדה שמשנה ששם אותו במרכז
+                document.getElementById("ShopeName").innerHTML = "<h1>Welcome To The Home of Carpets</h1>";//הכנסת מחרוזת
+                // StrForCarpetformation += "<h4>Carpet Name: " + strArray[i] + "</h4>";
+                document.getElementById("CarpetInformation").style.width = "100%";//מקבלים אלימנט שיש לו שדה שמשנה ששם רוחב
+                document.getElementById("CarpetInformation").style.float = "center";//מקבלים אלימנט שיש לו שדה שמשנה ששם אותו במרכז
+            }
+
+            //פונקציה שבונה את טבלה
+            function Carpetdisplay(divID, strArray) {
+                //מתחילים בטבלה שעושים את השורה הראשונה של שמות העמודות
+                StrForCarpetformation = "<table style='overflow-y:auto'>" +
+                    "<tr>" +
+                    "<th>Image</th>" +
+                    "<th>Name</th>" +
+                    "<th>Description</th>" +
+                    "<th>Price[$]</th>" +
+                    "<th>Amount</th>" +
+                    "<th>Entry Time</th>" +
+                    "<th>Manufacturer</th>" +
+                    "<th>Material</th>" +
+                    "<th>Add Quantity</th>" +
+                    "<th>Delete Product</th>" +
+                    "</tr>";
+                //מכניסה אוביקטים של מוצרים במערך להטבלה שרוצים ליצר
+                for (var i = 0; i < strArray.length; i++) {
+                    //הכנסת מוצר לשורה בטבלה
+                        StrForCarpetformation += "<tr>";
+                    StrForCarpetformation += '<td><img src="' + strArray[i].imagee + '" alt="' + strArray[i].name + '" width=50/></td>';//הכנסת תומנת המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h4>' + strArray[i].name + '</h4></td>';//הכנסת שם המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h5>' + strArray[i].description + '</h5></td>';//הכנסת תיאור המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h6>' + strArray[i].price + '</h6></td>';//הכנסת מחיר המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h7>' + strArray[i].amount + '</h7></td>';//הכנסת כמות המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h8>' + strArray[i].entrytime + '</h8></td>';//הכנסת זמן המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h9>' + strArray[i].manufacturer + ',' + strArray[i].arrcapter[0].CountryManufacture + '</h9></td>';//הכנסת שם יצרן ארץ יצור המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h9>' + strArray[i].arrcapter[1].material + '</h9></td>';//הכנסת שם חומר  המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><input type="button" style="width:50px" value=Add onclick="AddQuantity(\'' + i + '\')"/></td>';//הכנסת כפתור הוספת כמות מוצר בטבלה של המוצרים
+                    StrForCarpetformation += '<td><input type="button" style="width:50px" value=delete onclick="DeleteProduct(\'' + i + '\')"/></td>';//הכנסת כפתור מחיקת מוצר בטבלה של המוצרים
+                    StrForCarpetformation += "</tr>";//שזה סוגר כאילו סוף שורה
+                }
+                StrForCarpetformation += "</table>";//שזה סוגר סוף שלטבלה שהתחלנו לעשות
+                document.getElementById(divID).innerHTML = StrForCarpetformation;//תכניס את הטבלה השרשור שלה לתוך הדיוו בעזרת ה id
+
+            }
+            //פונקציה שמוסיפה כמות של המוצר
+            //idx זה ה i אינדקס מקום 
+            function AddQuantity(idx) {
+                var num2Purchase = prompt("Please enter amount to purchase", 0);//פותח חלון שמבקש את מספר של כמות שרוצים להוסיף
+                if (num2Purchase == null) return;//בודק שאם הוא לחץ על ביטול לא הכניס מספר אז לא לעשות הוספה
+                //בודק שאם הוא הכניס ערך שלא מספרי
+                if (!Number(num2Purchase)) {
+                    alert("Must be a number");//פותח חלון שנמצא בו הסטרינג הזה
+                    return;
+                }
+                //בודק שאם הוא הכניס ערך שקטן מאפס שלילי 
+                if (num2Purchase < 0) {
+                    alert("Quantity must be non negative");//פותח חלון שנמצא בו הסטרינג הזה
+                    return;
+                }
+                //בדיקה שאם הוא חורג מהמערך 
+                if (idx < 0 || idx > CarpetProducts.length - 1) {
+                    alert("Product not Exists");//פותח חלון שנמצא בו הסטרינג הזה
+                    return;
+                }
+
+                CarpetProducts[idx].amount = parseInt(CarpetProducts[idx].amount) + parseInt(num2Purchase);// מעדכנים את הכמות  המוצר
+                update();//מעדכן בלוקל סתוריג שינוים של מוצרים
+                Carpetdisplay("CarpetInformation", CarpetProducts);//מעדכנים הטבלה של מוצרים שמציגים על המסך
+            }
+            //פונקציה למחיקת מוצר מטבלת המוצרים
+            function DeleteProduct(idx) {
+                //בדיקה שאם הוא חורג מהמערך
+                if (idx < 0 || idx > CarpetProducts.length) {
+                    alert("Product not Exists");//פותח חלון שנמצא בו הסטרינג הזה
+                    return;
+                }
+                //פותיח חלון שיש בו סטריג שהוא שרשור של המפט עם שם המוצר אם נלחץ על אישור מתקיים התנאי 
+                if (confirm("Are you sure you want to delete " + CarpetProducts[idx].name + "?")) {
+                        CarpetProducts.splice(idx, 1);//מוחק את המוצר מהמערך
+                        update();//מעדכן בלוקל סתוריג שינוים של מוצרים 
+                    Carpetdisplay("CarpetInformation", CarpetProducts);//מעדכן בלוקל סתוריג שינוים של מוצרים
+                }
+            }
+            //פונקציה שמפעילים אותה אחרי שהכנסנו את עכי המוצר החדש ולחצנו על הכפתור הוסיף
+            function addCarpet() {
+                var pattern = /[a-z]+$/;//האותות שהוא מותר לו להכניס בתחום של האותות האלה קביעת הערכים שמכניס
+                var patterndigit = /[0-9]+$/;//המספרים שהוא מותר לו להכניס בתחום של 0-9
+                var patternDate = /\d{2}\d{2}/;// digit בעשם \dשיש לו שני תאים אז ארבע 
+                var name = document.getElementById("name").value;//הכנסת או לקיחת הערך של השם שהוא הכניס למשתנה
+                var description = document.getElementById("description").value;//הכנסת או לקיחת הערך של תיאור שהוא הכניס למשתנה
+                var price = document.getElementById("price").value;//הכנסת או לקיחתהערך של המחיר שהוא הכניס למשתנה
+                var amount = document.getElementById("amount").value;//הכנסת או לקיחת הערך של הכמות שהוא הכניס למשתנה
+                var manufacturer = document.getElementById("manufacturer").value;//הכנסת או לקיחת הערך של השם יצרן שהוא הכניס למשתנה
+                var entrytime = document.getElementById("entrytime").value;//הכנסת או לקיחת הערך של הזמן הוא הכניס למשתנה
+                var image = "carp2n.jpg";//תמונת ברירת מחדל
+                var category = document.getElementById("category").value;//הכנסת או לקיחת הערך  שהוא הכניס למשתנה
+                //בדיקה שהכנסתי ערכים לכולם  
+                if (name == "" || description == "" || price == "" || amount == "" || manufacturer == ""
+                    || entrytime == "" || category == "") {
+                    //מתקיים כאשר יש שדה אחד לפחות שלא הכנסנו ערך
+                    alert("one/more field empty!!!");
+                    return;
+                }
+                //אם התנאי מתקיים מכניס אחד שאומר שזה תקין עושה בדיקה לערכים 
+                var validateName = pattern.test(name) ? true : false;//בודקים אם הערך שהכניס לשם תקין לפי התנאי או הקביעה למעלה במשתנה ב pattern
+                var validatePrice = patterndigit.test(price) ? true : false;//בודקים אם הערך שהכניס למחיר תקין לפי התנאי או הקביעה למעלה במשתנה ב patterndigit
+                var validateAmount = patterndigit.test(amount) ? true : false;//בודקים אם הערך שהכניס לכמות תקין לפי התנאי או הקביעה למעלה במשתנה ב patterndigit
+                var validateManufacturer = pattern.test(manufacturer) ? true : false;//בודקים אם הערך שהכניס לשם יצרן תקין לפי התנאי או הקביעה למעלה במשתנה ב pattern
+                var validateAnytime = patterndigit.test(entrytime) ? true : false;//בודקים אם הערך שהכניס לזמן תקין לפי התנאי או הקביעה למעלה במשתנה ב patterndigit
+               
+                //  alert(validateName + "\n" + validateVisa + "\n" + validateDate + "\n" + validatePassword);
+                var str = "";
+                if (validateName == false) str = "name must string(a-z)";//אם הכניס ערך שגוי מכניס סטרינג כדי שאחרי זה יגיד מה הבעיה
+                if (validatePrice == false) str += str == "" ? "price must digit(0-9)" : "\nvisa price digit(0-9)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+                if (validateAmount == false) str += str == "" ? "amount must digit(0-9)" : "\namount must digit(0-9)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+                if (validateManufacturer == false) str += str == "" ? "manufacturer must string(a-z)" : "\nmanufacturer must string(a-z)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+                if (validateAnytime == false) str += str == "" ? "entrytime must digit(0-9)" : "\nentrytime must digit(0-9)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+                //   אם יש ערכים שגוים בודק אם יש מחרוזת
+                if (str != "") {
+                    alert(str);//פותיח חלון שיש בו סטרינג של הבעיות
+                    return;
+                }
+                //כל הערכים תקנים לכן הולך ל if
+                //פותיח חלון ושואל
+                if (!confirm("are you sure?press ok"))
+                {
+                    //לחץ על ביטול
+                    return;
+                }
+                //עושה אופיקט שזה המוצר שהכנסתי את הערכים שלו
+                var newCarpet = {
+                    name: document.getElementById("name").value,//השמת הערך של של השם שהכנסנו לתוך שדה שם של האופיקט
+                    description: document.getElementById("description").value,//השמת הערך של של התיאור שהכנסנו לתוך שדה תיאור של האופיקט
+                    price: document.getElementById("price").value,
+                    amount: document.getElementById("amount").value,
+                    manufacturer: document.getElementById("manufacturer").value,
+                    entrytime: document.getElementById("entrytime").value,
+                    imagee: "carp3n.jpg",//תמונת ברירת מחדל
+                    category: document.getElementById("category").value,
+                    arrcapter: [{ CountryManufacture: document.getElementById("manufacturerCountery").value }, { material: document.getElementById("material").value}]//הכנסת ערכים לתאים של מערך שהוא שדה
+                };
+               
+                CarpetProducts.push(newCarpet);//הכנסת אופיקט למערך המוצרים
+                update();//מעדכן בלוקל סתוריג  מוצרים
+                Carpetdisplay("CarpetInformation", CarpetProducts);//מעדכנים הטבלה של מוצרים שמציגים על המסך
+            }
+        </script>
+</head>
+<body onload="startToChoose()">
+    <div id="ph"></div>
+    <div id="container"> 
+        <button onclick="document.location='Carptcustomer.html'" style="position:absolute;right:100px;top:10px">customer</button>
+        <div id="ShopeName"></div>
+        <div>
+            <form name="newCarpet">
+                <div>
+                    <label for="name">Carpet Name: </label>
+                    <input type="text" id="name"/>
+                </div>
+                <br />
+                <div>
+                    <label for="description">Carpet Description: </label>
+                    <input type="text" id="description" />
+                </div>
+                <br />
+                <div>
+                    <label for="price">Carpet Price: </label>
+                    <input type="text" id="price" />
+                </div>
+                <br />
+                <div>
+                    <label for="amount">Carpet Amount: </label>
+                    <input type="text" id="amount" />
+                </div>
+                <br />
+                <div>
+                    <label for="entrytime">Entry Time: </label>
+                    <input type="text" id="entrytime" />
+                </div>
+                <br />
+                <div>
+                    <label for="manufacturer">Manufacturer: </label>
+                    <input type="text" id="manufacturer" />
+                </div>
+                <br />
+                <div>
+                    <label for="material">Material: </label>
+                    <select id="material">
+                        <option selected>polyester</option>
+                        <option>cotton</option>
+                        <option>hisit</option>
+                        <option>polyester</option>
+                        <option>New Zealand wool</option>
+                    </select>
+                </div>
+                <br />
+                <div>
+                    <label for="manufacturerCountery">Manufacturer Countery: </label>
+                    <select id="manufacturerCountery">
+                        <option selected>turkey</option>
+                        <option>India</option>
+                        <option>Belgium</option>
+                      
+                    </select>
+                </div>
+                <br />
+                <div>
+                    <label for="category">Category: </label>
+                    <select id="category">
+                        <option selected>Classic Carpet</option>
+                        <option>Turkish shaggy carpet</option>
+                    </select>
+                </div>
+                <br />
+                <input type="button" style="margin-left:100px;height:45px;" onclick="addCarpet()" value="Add" />
+            </form>
+        </div>
+        <div id="CarpetInformation"></div>
+       
+
+    </div>
+   </body>
+</html>

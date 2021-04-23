@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="CarpetProducts.js"></script>
+    <title></title>
+    <style>
+        .container {
+            width: 600px;
+            height: 400px;
+            position: relative;
+        }
+        label{
+            display:inline-block;
+            width:10%;
+        }
+        input {
+            width: 10%;
+            display: inline-block;
+        }
+    </style>
+    <script>
+   
+        function cashinformation() {
+          
+           
+            var pattern = /[a-z]+$/;//האותות שהוא מותר לו להכניס בתחום של האותות האלה קביעת הערכים שמכניס
+            var patterndigit = /[0-9]+$/;//המספרים שהוא מותר לו להכניס בתחום של 0-9
+            var patternDate = /\d{2}\d{2}/;//digit בעשם \dשיש לו שני תאים אז ארבע
+            var name = document.getElementById("textname").value;//הכנסת או לקיחת הערך של השם שהוא הכניס למשתנה
+            var visa = document.getElementById("visa").value;//הכנסת או לקיחת הערך של וויזה שהוא הכניס למשתנה
+            var date1 = document.getElementById("validity").value;//הכנסת או לקיחת הערך של תוקף שהוא הכניס למשתנה
+            var numpassword = document.getElementById("passwordnumber").value;//הכנסת או לקיחת הערך של סיסמה קוד שהוא הכניס למשתנה
+            //בדיקה שהכנסתי ערכים לכולם
+            if (name == "" || visa == "" || date1 == "" || numpassword == "") {
+               //מתקיים כאשר יש שדה אחד לפחות שלא הכנסנו ערך
+                alert("one/more field is empty");
+                return;
+            }
+           
+            //אם התנאי מתקיים מכניס אחד שאומר שזה תקין עושה בדיקה לערכים
+            var validateName = pattern.test(name) ? true : false;//בודקים אם הערך שהכניס לשם תקין לפי התנאי או הקביעה למעלה במשתנה ב pattern
+            var validateVisa = patterndigit.test(visa) ? true : false;//בודקים אם הערך שהכניס לוויזה תקין לפי התנאי או הקביעה למעלה במשתנה ב patterndigit
+            var validateDate = patternDate.test(date1) ? true : false;//בודקים אם הערך שהכניס לתוקף תקין לפי התנאי או הקביעה למעלה במשתנה ב patternDate
+            var validatePassword = patterndigit.test(numpassword) ? true : false;//בודקים אם הערך שהכניס לסיסמה קוד תקין לפי התנאי או הקביעה למעלה במשתנה ב patterndigit
+          //  alert(validateName + "\n" + validateVisa + "\n" + validateDate + "\n" + validatePassword);
+            var str = "";
+            if (validateName == false) str = "name must string(a-z)";//אם הכניס ערך שגוי מכניס סטרינג כדי שאחרי זה יגיד מה הבעיה
+            if (validateVisa == false) str += str == "" ? "visa must digit(0-9)" : "\nvisa must digit(0-9)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+            if (validateDate == false) str += str == "" ? "validity must date(dd/MM)" : "\nvalidity must date(dd/MM)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקה מכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+            if (validatePassword == false) str += str == "" ? "code must digit(0-9)" : "\ncode must digit(0-9)";//אם הכניס ערך שגוי בודק הסטרינג אם ריקהמכניס סטרינג אם לא יורד שורה ומשרשר לסטרינג של הבעיות שהיו לפני כדי שאחרי זה יגיד מה הבעיה
+            //אם יש ערכים שגוים בודק אם יש מחרוזת
+            if (str != "") {
+                alert(str);//פותיח חלון שיש בו סטרינג של הבעיות
+                return;
+            }
+            //כל הערכים תקנים לכן הולך ל if
+            //פותיח חלון ושואל
+            if (!confirm("are your?press ok")) {
+                //לחץ על ביטול
+                return;
+            }
+          //מיצר אופיקט שמכניס לאופיקט הזה הערכים של הלקוח שהכניס אותם ואז מכניס האוביקט למערך המוצרים
+            customers.push({
+
+                'name': name,
+                'visa': visa,
+                'validity': date1,
+                'code': numpassword
+            });
+            alert("your order is saved!!");//פותיח חלון שמציג הסטרינג הזה
+            document.getElementById("textname").value = "";//מוחק את הערך שבשדה ערך שלקוח הכניס
+            document.getElementById("visa").value = "";//מוחק את הערך שבשדה ערך שלקוח הכניס
+            document.getElementById("validity").value = "";//מוחק את הערך שבשדה ערך שלקוח הכניס
+            document.getElementById("passwordnumber").value = "";//מוחק את הערך שבשדה ערך שלקוח הכניס
+            localStorage["customers"] = customers;//שמירה ללוקל סתוריג
+            localStorage["Purchases"] = null;//שמירה ללוקל סתוריג
+            //localstorage["name"] = name;
+            //localstorage["visa"] = visa;
+            //localstorage["validity"] = date;
+            //localstorage["password number"] = numpassword;
+
+           // arrcashinformation = new object();//אוביקט שישמור את כל שהכניס
+
+
+            //arrcashinformation.name =
+        }
+      
+        //בניית הטבלת ההזמנה שהזמין הלקוח מוצרים שקנה
+        function Carpetdisplay(divID, strArray) {
+            //מתחילים בטבלה שעושים את השורה הראשונה של שמות העמודות
+            StrForCarpetformation = "<table>" +
+                "<tr>" +
+                "<th>Image</th>" +
+                "<th>Name</th>" +
+                "<th>Description</th>" +
+                "<th>Price[$]</th>" +
+                "<th>Amount</th>" +
+                "<th>Entry Time</th>" +
+                "<th>Manufacturer</th>" +
+                "<th>Material</th>" +
+                //"<th>Add Quantity</th>" +
+                //"<th>Delete Product</th>" +
+                "</tr>";
+            //מכניסה אוביקטים  של מצורים שקנינו  שבמערך להטבלה שרוצים ליצר
+            for (var i = 0; i < strArray.length; i++) {
+                //הכנסת מוצר לשורה בטבלה
+                StrForCarpetformation += "<tr>";
+                StrForCarpetformation += '<td><img src="' + strArray[i].imagee + '" alt="' + strArray[i].name + '" width=50/></td>';//הכנסת תומנת המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h4>' + strArray[i].name + '</h4></td>';//הכנסת שם המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h5>' + strArray[i].description + '</h5></td>';//הכנסת תיאור המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h6>' + strArray[i].price + '</h6></td>';//הכנסת מחיר המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h7>' + strArray[i].amount + '</h7></td>';//הכנסת כמות המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h8>' + strArray[i].entrytime + '</h8></td>';//הכנסת זמן המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h9>' + strArray[i].manufacturer + ',' + strArray[i].arrcapter[0].CountryManufacture + '</h9></td>';//הכנסת שם יצרן ארץ יצור המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h9>' + strArray[i].arrcapter[1].material + '</h9></td>';//הכנסת שם חומר  המוצר לשורה שלו בטבלה
+                //StrForCarpetformation += '<td><input type="button" value=Add onclick="AddQuantity(\'' + i + '\')"/></td>';
+                //StrForCarpetformation += '<td><input type="button" value=delete onclick="DeleteProduct(\'' + i + '\')"/></td>';
+                StrForCarpetformation += "</tr>";//שזה סוגר כאילו סוף שורה
+            }
+            StrForCarpetformation += "</table>";//שזה סוגר סוף של טבלה שהתחלנו לעשות
+            document.getElementById(divID).innerHTML = StrForCarpetformation;//תכניס את הטבלה השרשור שלה לתוך הדיוו בעזרת ה id
+
+        }
+
+
+        function loadPurchases() {
+            //localStorage["Carpets"] = JSON.stringify(CarpetProducts);
+            if (localStorage["Purchases"] == undefined) {
+                updatePurchase();
+            }
+
+            carpetPurchases = JSON.parse(localStorage["Purchases"]);//לוקיח את קניות של המוצרים שבלוקל סתוריג ומכנסים למערך
+        }
+        //פונקציה שטוענת את ההזמנה שבלוקל סתוריג  
+        function load() {
+            loadPurchases();
+            Carpetdisplay("CarpetPurchases", carpetPurchases);
+        }
+    </script>
+</head>
+<body onload="load()">
+    <div id="ph"></div>
+    <div id="container">
+
+        <label>name :</label>
+        <input type="text" placeholder="name" id="textname" />
+        <br />
+        <br />
+        <label>visa card :</label>
+        <input type="text" placeholder="0000-0000-0000" id="visa" />
+        <br />
+        <br />
+        <label>date :</label>
+        <input type="month" id="validity" />
+        <br />
+        <br />
+        <label>password number :</label>
+        <input type="text" placeholder="000" id="passwordnumber" />
+        <br />
+        <br />
+        <button onclick="cashinformation()">submit</button>
+        <div id="CarpetPurchases"></div>
+    </div>
+    </body>
+</html>

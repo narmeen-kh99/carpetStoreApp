@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        .btn{
+            width:100px;
+            height:30px;
+        }
+            .btn:hover{
+       background-color:aquamarine;
+       }
+    </style>
+    <title>shaggyrugs</title>
+    <script src="CarpetProducts.js"></script>
+    <script>
+        //פונקציה שטוענת את המוצרים לתוך מערך המוצרים
+        function loadCarpets() {
+            //localStorage["Carpets"] = JSON.stringify(CarpetProducts);
+            //אם אני נכנסת פעם הראשונה כוונה ש לוקל סתוריג רייק  עדיין אין תא של מוצרים
+            if (localStorage["Carpets"] == undefined) {
+                update();
+            }
+
+            CarpetProducts = JSON.parse(localStorage["Carpets"]);//לוקח מה שיש לי בלוקל סתוריג משנה לסטריג ומכניס למערך דורס מה שהיה קודם במערך ושם החדש
+            //console.log(CarpetProducts));
+        }
+        //פונקציה שטוענת את המוצרים שקנינו לתוך מערך מוצרים הקנייה
+        function loadPurchases() {
+            //localStorage["Purchases"] = JSON.stringify(carpetPurchases);
+            //אם אני נכנסת פעם הראשונה כוונה ש לוקל סתוריג רייק מבחינת עדיין אין תא של מוצרי קנייה
+            if (localStorage["Purchases"] == undefined) {
+                updatePurchase();
+            }
+
+            carpetPurchases = JSON.parse(localStorage["Purchases"]);//לוקח מה שיש לי בלוקל סתוריג משנה לסטריג ומכניס למערך דורס מה שהיה קודם במערך ושם החדש
+        }
+        //פונקציה שמעדכנת לוקל סתוריג לוקחת  מערך אופיקטים של המוצרים משנה לסטרינג משרשר אותו ומכניסה ללוקל סתוריג 
+        function update() {
+            localStorage["Carpets"] = JSON.stringify(CarpetProducts);
+        }
+        //פונקציה שמעדכנת לוקל סתוריג לוקחת  מערך אופיקטים של מוצרים הקנייה משנה לסטרינג משרשר אותו ומכניסה ללוקל סתוריג 
+        function updatePurchase() {
+            localStorage["Purchases"] = JSON.stringify(carpetPurchases);
+        }
+        function startToChoose() {
+         //   loadCarpets();
+                //console.log(CarpetProducts);
+                loadCarpets();
+                loadPurchases();
+                Design()
+                Carpetdisplay("CarpetInformation", CarpetProducts,true);
+                Carpetdisplay("CarpetPurchases", carpetPurchases, false);
+        }
+
+        //פונקציה לעיצוב
+            function Design() {
+                document.getElementById("ShopeName").style.color = "brown";//מקבלים אלימנט שיש לו שדה שמשנה את הצבע  
+                document.getElementById("ShopeName").style.textAlign = "center";//מקבלים אלימנט שיש לו שדה שמשנה ששם אותו במרכז
+                document.getElementById("ShopeName").innerHTML = "<h1>Welcome To The Home of Carpets</h1>";//הכנסת מחרוזת 
+               // StrForCarpetformation += "<h4>Carpet Name: " + strArray[i] + "</h4>";
+                document.getElementById("CarpetInformation").style.width = "100%";//מקבלים אלימנט שיש לו שדה שמשנה ששם רוחב 
+                document.getElementById("CarpetInformation").style.float = "center";//מקבלים אלימנט שיש לו שדה שמשנה ששם אותו במרכז
+            }
+
+            
+            //פונקציה שמוחקת של קפתור המחיקה שטבלת מוצרים שקנינו
+            function delete_item(name,e){
+                //פדיקה אם הלקוח באמת רוצה למחוק שואל לקוחאם הכנים לא לא עושה כלום לטבלת הקנייה
+                if(!confirm("are you sure?press ok")){
+                    return;
+                }
+               
+                const idx1 = carpetPurchases.findIndex(elem => elem.name == name);//שומרים האינדקס של המוצר שרוצים למחוק האינדקס שלו שבמערך הקניות
+                const idx2 = CarpetProducts.findIndex(elem => elem.name == name);//שומרים האינדקס של המוצר שרוצים למחוק האינדקס שלו שבמערך המוצרים
+                CarpetProducts[idx2].amount=parseInt(carpetPurchases[idx1].amount) + parseInt(CarpetProducts[idx2].amount);//החזרת הכמות של המוצר לכמות שהיתה לפני הקניה של המוצר כי הוא בטל אותו
+                const index = carpetPurchases.findIndex(elem => elem.name == name);//שומרים האינדקס של המוצר שרוצים למחוק האינדקס שלו שבמערך הקניות
+                carpetPurchases.splice(index, 1);//מחיקת המוצר שקנינו ורוצים לבטל קניתו 
+
+                isbuy = carpetPurchases.length == 0 ? false : true;//אם אין קניות אין מוצרים שקנינו במערך קניות
+                update();//עדכון ללוקל סתוריג
+                Carpetdisplay("CarpetPurchases", carpetPurchases, false, true);//כאילו עדכון של הטבלה של המוצרים על המסך
+                updatePurchase();//עדכון ללוקל סתוריג
+                Carpetdisplay("CarpetInformation", CarpetProducts, true, false);//כאילו עדכון של הטבלה של המוצרים שקנינו על המסך
+               
+     
+            }
+            var isbuy=false;
+            //פונקציה שנכנסים אליה כאשר לוחצים על כפתור למעבר לקובה .
+            function go(){
+                //CarpetPurchases
+              
+                
+              
+                if(isbuy==false){
+                    alert("not found order");
+                    return;
+                }
+                document.location='Cash.html';
+            }
+        //פונקציה שבונה את טבלה 
+        function Carpetdisplay(divID, strArray, withButton) {
+            //מתחילים בטבלה שעושים את השורה הראשונה של שמות העמודות
+            StrForCarpetformation = "<table>" +
+                "<thead>" +
+                "<tr>" +
+                "<th>Image</th>" +
+                "<th>Name</th>" +
+                "<th>Description</th>" +
+                "<th>Price[$]</th>" +
+                "<th>Amount</th>" +
+                "<th>Entry Time</th>" +
+                "<th>Manufacturer</th>" +
+                "<th>Material</th>";
+            if (withButton)
+                StrForCarpetformation += "<th>Buy</th>";//השם של העמודה יהיה קנה שזה אצל טבלת מוצרים
+            else
+                if (withButton)
+                    StrForCarpetformation += "<th>Delete</th>";//השם של העמודה יהיה קנה שזה אצל טבלת מוצרי הקניה 
+            StrForCarpetformation += "</tr>" +
+                "</thead><tbody>";
+            //מכניסה אוביקטים של מוצרים או של מצורים שקנינו תלוי במערך להטבלה שרוצים ליצר 
+            for (var i = 0; i < strArray.length; i++) {
+                //לוקחים המוצרים שהם מסוג שטיחים קלאסים
+                if (strArray[i].category == "Turkish shaggy carpet")
+                {
+                  //הכנסת מוצר לשורה בטבלה
+                StrForCarpetformation += "<tr>";
+                StrForCarpetformation += '<td><img src="' + strArray[i].imagee + '" alt="' + strArray[i].name + '" width=50/></td>';//הכנסת תומנת המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h4>' + strArray[i].name + '</h4></td>';//הכנסת שם המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h5>' + strArray[i].description + '</h5></td>';//הכנסת תיאור המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h6>' + strArray[i].price + '</h6></td>';//הכנסת מחיר המוצר לשורה שלו בטבלה 
+                StrForCarpetformation += '<td><h7>' + strArray[i].amount + '</h7></td>';//הכנסת כמות המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h8>' + strArray[i].entrytime + '</h8></td>';//הכנסת זמן המוצר לשורה שלו בטבלה
+                StrForCarpetformation += '<td><h9>' + strArray[i].manufacturer + ',' + strArray[i].arrcapter[0].CountryManufacture + '</h9></td>';//הכנסת שם יצרן ארץ יצור המוצר לשורה שלו בטבלה
+                    StrForCarpetformation += '<td><h9>' + strArray[i].arrcapter[1].material + '</h9></td>';//הכנסת שם חומר  המוצר לשורה שלו בטבלה
+                if (withButton)
+                    StrForCarpetformation += '<td><input type="button" value="Purchase" onclick="Purchase(\'' + strArray[i].name + '\')"/></td>';//הכנסת כפתור קנה מוצר אם אנחנו בטבלה של המוצרים
+                else
+                    if (!withButton)
+                            StrForCarpetformation += '<td><input type="button" value="Delete" onclick="delete_item(\'' + strArray[i].name + '\',this)"/></td>';//הכנסת כפתור מחיקת מוצר אם אנחנו בטבלה של המוצרים
+
+                StrForCarpetformation += "</tr>";//שזה סוגר כאילו סוף שורה
+                
+                }
+            }
+                StrForCarpetformation += "</tbody></table>";//שזה סוגר סוף של טבלה שהתחלנו לעשות
+                document.getElementById(divID).innerHTML = StrForCarpetformation;//תכניס את הטבלה השרשור שלה לתוך הדיוו בעזרת ה id
+
+            }
+
+            function Purchase(name) {
+                var num2Purchase = prompt("Please enter amount to purchase", 0);//פותח חלון שמבקש את מספר שכמה אנחנו רוצים לקנות
+                if (num2Purchase == null) return;//בודק שאם הוא לחץ על ביטול אז לא לעשות
+
+                const found = CarpetProducts.findIndex(elem => elem.name == name);//מוצא את האינדקס של האוביקט שאני רוצה לקנות וזה האינדקס שלו במערך של המוצרים
+                
+                //בדיקה שאם האינדקס קבל ערך
+                if (found != -1) {
+                    //אם המספר הכמות שרצה לקנות גדולה ממה שיש ממה שיש לנו מכמות המוצר במערך המוצרים 
+                    if (num2Purchase > CarpetProducts[found].amount) {
+                        alert("Amount is smaller then requested..Abort Purchase");//פותח חלון קטן שיש בו הסטרינג הזה
+                        return;
+                    }
+                    CarpetProducts[found].amount -= num2Purchase;// מעדכן את הכמות של המוצר שנמא בתוך מערך המוצרים שקניתי ממנו
+                    const idx = carpetPurchases.findIndex(elem => elem.name == name);// בעזרת השם של המוצר שבחרנו לקנות מחפשים את האינדקס של המוצר במערך הקניות  
+                    //בודק  מוצר שבחרתי לקנות אם הוא נמצא במערך הקניות  
+                    if (idx == -1) {
+                        //אם הוא לא נמצא 
+                        carpetPurchases.push({ ...CarpetProducts[found] });//מכניסים אתותו שזה המוצר שרצינו לקנות לתוך מערך הקניות 
+                        carpetPurchases[carpetPurchases.length - 1].amount = num2Purchase;//מעדכן את ערך שדה הכמות בכמות שבחרו לקנות בה
+                    }
+                    else
+                        carpetPurchases[idx].amount = parseInt(carpetPurchases[idx].amount) + parseInt(num2Purchase);//אם הוא נמצא בתוך מערך הקניות אז רק מעדכנים את הכמות שקנינו את המוצר 
+                    update();//מעדכן בלוקל סתוריג שינוים של מוצרים
+                    Carpetdisplay("CarpetInformation", CarpetProducts, true);//מעדכנים הטבלה של מוצרים שמציגים על המסך
+                    updatePurchase();//מעדכן בלוקל סתוריג שינוים של קניות
+                    Carpetdisplay("CarpetPurchases", carpetPurchases, false);//מעדכנים הטבלה של קניות שמציגים על המסך
+                    isbuy = true;//יש לי קניות
+                    console.log(carpetPurchases);
+                    //console.log(found);
+                }
+            }
+    </script>
+
+</head>
+<body onload="startToChoose()">
+    <div id="ph"></div>
+    <div id="container">
+        <div id="ShopeName"></div>
+        <div id="GameYard"></div>
+        <div id="CarpetInformation"></div>
+        <h1>Purchases</h1>
+        <button class="btn" onclick="go()">Cart</button>
+        <br/>
+        <br />
+        <div id="CarpetPurchases"></div>
+
+    </div>
+    </body>
+</html>

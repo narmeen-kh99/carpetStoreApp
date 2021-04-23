@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title></title>
+    <style>
+        button {
+            margin-top: 40px;
+            height: 60px;
+            width: 170px;
+            margin-left:30px;
+        }
+        button:hover{
+            background-color:aquamarine;
+           
+        }
+       .btn{
+            margin-top: 40px;
+            height: 60px;
+            width: 170px;
+            margin-left:30px;
+       }
+       .btn:hover{
+       background-color:aquamarine;
+       }
+    </style>
+        <script src="CarpetProducts.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script>
+
+          
+            function start() {
+               
+                document.getElementById("btn").style.display = "none";//כאשר לחצנו על כפתור התחלה אחרי זה מעלימים אותו מהדף
+              //  console.log(CarpetProducts);
+                Design()
+                StartGame();
+            }
+            function Design() {
+                document.getElementById("ShopeName").style.color = "brown";
+                document.getElementById("ShopeName").style.textAlign = "center";
+                document.getElementById("ShopeName").innerHTML = "<h1>Welcome To The Home of Carpets</h1>";
+                document.getElementById("GameYard").style.textAlign = "center";
+                //document.getElementById("GameYard").style.textAlign = "center";
+
+            }
+          
+            
+            //פונקציה שאומרת לי ללכת לדף המתאים
+            function PersonResult1(r) {
+              num=eval("document.getElementById('kindperson"+r+"').value")
+
+
+                if (num== "customer")
+                { document.location = "Carptcustomer.html"; }
+                if (num == "manager")
+                { document.location = "manager.html"; }
+            }
+           
+            //פונקציה שכאשר לוחצים על כפתור של לקוח ילך לשם אם לחץ למנהל ילך לדף מנהל
+            function StartGame() {
+
+               // LegalOptions = [];
+                // אוביקט ששומרים ששמורים בתוכו שאלה ושתי תשובות
+                Question = new Object();
+                Question.question = "You are a customer or manager Choose from the option?";//שדה שיש בתוכו שאלה
+                Question.AnswersArr = [];//מערך שמות של כפתורים
+                Question.AnswersArr[0] = "customer";
+                Question.AnswersArr[1] = "manager";
+                GameYardStr = "";
+
+                GameYardStr += "<h3>" + Question.question + "</h3>";//משרשרים את שאלה לסטרינג
+
+                for (var i = 0; i < Question.AnswersArr.length; i++) {
+
+                    GameYardStr += "<input type='button' class='btn' value= " + Question.AnswersArr[i] + " name= Answer id= kindperson" + i + " style=textAlign:left onclick='PersonResult1(" + i + ")' />";//לשרשר בתוכה גם את הכפתורים
+                   
+                }
+                
+
+
+                document.getElementById("GameYard").innerHTML = GameYardStr;//מכניס השרשור של שאלה ושני הכפתורים לתוך הדיוו שיש לו את ה id הזה
+
+            }
+
+        </script>
+   
+</head>
+<body>
+    <button id="btn" onclick="start()">Start shopping</button>
+    <div id="ph"></div>
+    <div id="container">
+        <div id="ShopeName"></div>
+        <div id="GameYard"></div>
+    </div>
+
+</body>
+</html>

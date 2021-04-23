@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Carpetcustomer</title>
+    <script src="CarpetProducts.js"></script></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <style>
+        #NameOfShop
+        {
+            color:brown;
+            font-size:100px;
+            text-align:center;
+        }
+        img{
+            margin-top:80px;
+            width:400px;
+            height:400px;
+            margin-left:40px;
+            border:0px solid #60a5ea;
+            
+          box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        }
+        button{
+            margin-top:40px;
+            height:60px;
+            width:170px;
+        }
+             button:hover{
+            background-color:aquamarine;
+           
+        }
+    </style>
+</head>
+<body dir="ltr" style="text-align:center">
+    <div class="containername">
+        <div class="row">
+            <div text-align="center">
+                <span id="NameOfShop">The Carpet House</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="containercategory">
+        <div class="row">
+            <table align="center">
+
+                <tr>
+                    <th>
+                        <img src="classicrugs.jpg" class="PhotoDiv1" />
+                    </th>
+
+                    <th>
+                        <img src="shaggyrugs.jpg" class="PhotoDiv2" />
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                            
+                            <button onclick="document.location='Classicrugs.html'">Classic Carpets</button>
+                    </th>
+
+                    <th>
+                            <button onclick="document.location='shaggyrugs.html'">Turkish shaggy Carpets</button>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
